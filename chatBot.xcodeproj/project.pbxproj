@@ -17,6 +17,12 @@
 		40E334671EFBD1FF0064EE5B /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = 40E334661EFBD1FF0064EE5B /* AppIcon.appiconset */; };
 		40E3346F1EFBD4CE0064EE5B /* Channel.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E3346E1EFBD4CE0064EE5B /* Channel.m */; };
 		40E334711EFBD9E90064EE5B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 40E334701EFBD9E90064EE5B /* GoogleService-Info.plist */; };
+		40E334751EFBDD430064EE5B /* ChannelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E334731EFBDD430064EE5B /* ChannelCell.m */; };
+		40E334761EFBDD430064EE5B /* ChannelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40E334741EFBDD430064EE5B /* ChannelCell.xib */; };
+		40E3347A1EFBDD8C0064EE5B /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E334781EFBDD8C0064EE5B /* LoginViewController.m */; };
+		40E3347B1EFBDD8C0064EE5B /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40E334791EFBDD8C0064EE5B /* LoginViewController.xib */; };
+		40E3347F1EFBE2770064EE5B /* ChatScreenTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E3347D1EFBE2770064EE5B /* ChatScreenTableViewController.m */; };
+		40E334801EFBE2770064EE5B /* ChatScreenTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40E3347E1EFBE2770064EE5B /* ChatScreenTableViewController.xib */; };
 		E503EC43E08D70AA8830250E /* libPods-chatBot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C14CED3E727B7D865F9BD6 /* libPods-chatBot.a */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +44,15 @@
 		40E3346D1EFBD4CE0064EE5B /* Channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Channel.h; sourceTree = "<group>"; };
 		40E3346E1EFBD4CE0064EE5B /* Channel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Channel.m; sourceTree = "<group>"; };
 		40E334701EFBD9E90064EE5B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		40E334721EFBDD430064EE5B /* ChannelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelCell.h; sourceTree = "<group>"; };
+		40E334731EFBDD430064EE5B /* ChannelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelCell.m; sourceTree = "<group>"; };
+		40E334741EFBDD430064EE5B /* ChannelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChannelCell.xib; sourceTree = "<group>"; };
+		40E334771EFBDD8C0064EE5B /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		40E334781EFBDD8C0064EE5B /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		40E334791EFBDD8C0064EE5B /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		40E3347C1EFBE2770064EE5B /* ChatScreenTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatScreenTableViewController.h; sourceTree = "<group>"; };
+		40E3347D1EFBE2770064EE5B /* ChatScreenTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatScreenTableViewController.m; sourceTree = "<group>"; };
+		40E3347E1EFBE2770064EE5B /* ChatScreenTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatScreenTableViewController.xib; sourceTree = "<group>"; };
 		85C14CED3E727B7D865F9BD6 /* libPods-chatBot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-chatBot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		883E8C4127DBAC791734AAA7 /* Pods-chatBot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chatBot.release.xcconfig"; path = "Pods/Target Support Files/Pods-chatBot/Pods-chatBot.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -114,6 +129,12 @@
 		40E3346A1EFBD39B0064EE5B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				40E334771EFBDD8C0064EE5B /* LoginViewController.h */,
+				40E334781EFBDD8C0064EE5B /* LoginViewController.m */,
+				40E334791EFBDD8C0064EE5B /* LoginViewController.xib */,
+				40E3347C1EFBE2770064EE5B /* ChatScreenTableViewController.h */,
+				40E3347D1EFBE2770064EE5B /* ChatScreenTableViewController.m */,
+				40E3347E1EFBE2770064EE5B /* ChatScreenTableViewController.xib */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -130,6 +151,9 @@
 		40E3346C1EFBD4280064EE5B /* Layout */ = {
 			isa = PBXGroup;
 			children = (
+				40E334721EFBDD430064EE5B /* ChannelCell.h */,
+				40E334731EFBDD430064EE5B /* ChannelCell.m */,
+				40E334741EFBDD430064EE5B /* ChannelCell.xib */,
 			);
 			name = Layout;
 			sourceTree = "<group>";
@@ -212,8 +236,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40E3347B1EFBDD8C0064EE5B /* LoginViewController.xib in Resources */,
 				40E3345D1EFBCBDB0064EE5B /* LaunchScreen.storyboard in Resources */,
+				40E334801EFBE2770064EE5B /* ChatScreenTableViewController.xib in Resources */,
 				40E334651EFBCC220064EE5B /* Images.xcassets in Resources */,
+				40E334761EFBDD430064EE5B /* ChannelCell.xib in Resources */,
 				40E3345A1EFBCBDB0064EE5B /* Assets.xcassets in Resources */,
 				40E334671EFBD1FF0064EE5B /* AppIcon.appiconset in Resources */,
 				40E334581EFBCBDB0064EE5B /* Main.storyboard in Resources */,
@@ -278,8 +305,11 @@
 			files = (
 				40E334551EFBCBDB0064EE5B /* ViewController.m in Sources */,
 				40E3346F1EFBD4CE0064EE5B /* Channel.m in Sources */,
+				40E3347F1EFBE2770064EE5B /* ChatScreenTableViewController.m in Sources */,
+				40E3347A1EFBDD8C0064EE5B /* LoginViewController.m in Sources */,
 				40E334521EFBCBDB0064EE5B /* AppDelegate.m in Sources */,
 				40E3344F1EFBCBDB0064EE5B /* main.m in Sources */,
+				40E334751EFBDD430064EE5B /* ChannelCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
