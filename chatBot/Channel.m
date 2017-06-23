@@ -10,4 +10,11 @@
 
 @implementation Channel
 
++(instancetype) initWithChannelName:(NSString *)name andChannelID:(NSString * )cid
+{
+    Channel *channelObject = [Channel new];
+    channelObject.channelName = name ;
+    channelObject.channelID = cid ;
+    return channelObject;
+}
 @end

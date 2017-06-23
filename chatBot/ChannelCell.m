@@ -7,11 +7,16 @@
 //
 
 #import "ChannelCell.h"
+@import Firebase ;
+@interface ChannelCell () <UITextFieldDelegate>
+
+@end
 
 @implementation ChannelCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
+    self.CreateNewChannelTextField.delegate = self ;
     // Initialization code
 }
 
@@ -19,6 +24,19 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES ;
+}
+- (IBAction)createChannelButtonTapped:(id)sender {
+    
+    NSLog(@"title: %@",self.CreateNewChannelTextField.text);
+    
+    [self.delegate createChannelDataForNewChannelWithTitle:self.CreateNewChannelTextField.text];
+    
 }
 
 @end

@@ -18,11 +18,10 @@
 		40E3346F1EFBD4CE0064EE5B /* Channel.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E3346E1EFBD4CE0064EE5B /* Channel.m */; };
 		40E334711EFBD9E90064EE5B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 40E334701EFBD9E90064EE5B /* GoogleService-Info.plist */; };
 		40E334751EFBDD430064EE5B /* ChannelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E334731EFBDD430064EE5B /* ChannelCell.m */; };
-		40E334761EFBDD430064EE5B /* ChannelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40E334741EFBDD430064EE5B /* ChannelCell.xib */; };
 		40E3347A1EFBDD8C0064EE5B /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E334781EFBDD8C0064EE5B /* LoginViewController.m */; };
-		40E3347B1EFBDD8C0064EE5B /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40E334791EFBDD8C0064EE5B /* LoginViewController.xib */; };
-		40E3347F1EFBE2770064EE5B /* ChatScreenTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E3347D1EFBE2770064EE5B /* ChatScreenTableViewController.m */; };
-		40E334801EFBE2770064EE5B /* ChatScreenTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40E3347E1EFBE2770064EE5B /* ChatScreenTableViewController.xib */; };
+		40E334831EFCE9EB0064EE5B /* ChannelListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E334821EFCE9EB0064EE5B /* ChannelListViewController.m */; };
+		40E6619B1EFD102A00C96C36 /* ExistingChannelListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E6619A1EFD102A00C96C36 /* ExistingChannelListCell.m */; };
+		40E6619E1EFD3C2300C96C36 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E6619D1EFD3C2300C96C36 /* ChatViewController.m */; };
 		E503EC43E08D70AA8830250E /* libPods-chatBot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C14CED3E727B7D865F9BD6 /* libPods-chatBot.a */; };
 /* End PBXBuildFile section */
 
@@ -46,13 +45,14 @@
 		40E334701EFBD9E90064EE5B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		40E334721EFBDD430064EE5B /* ChannelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelCell.h; sourceTree = "<group>"; };
 		40E334731EFBDD430064EE5B /* ChannelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelCell.m; sourceTree = "<group>"; };
-		40E334741EFBDD430064EE5B /* ChannelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChannelCell.xib; sourceTree = "<group>"; };
 		40E334771EFBDD8C0064EE5B /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		40E334781EFBDD8C0064EE5B /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		40E334791EFBDD8C0064EE5B /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
-		40E3347C1EFBE2770064EE5B /* ChatScreenTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatScreenTableViewController.h; sourceTree = "<group>"; };
-		40E3347D1EFBE2770064EE5B /* ChatScreenTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatScreenTableViewController.m; sourceTree = "<group>"; };
-		40E3347E1EFBE2770064EE5B /* ChatScreenTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatScreenTableViewController.xib; sourceTree = "<group>"; };
+		40E334811EFCE9EB0064EE5B /* ChannelListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelListViewController.h; sourceTree = "<group>"; };
+		40E334821EFCE9EB0064EE5B /* ChannelListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelListViewController.m; sourceTree = "<group>"; };
+		40E661991EFD102A00C96C36 /* ExistingChannelListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExistingChannelListCell.h; sourceTree = "<group>"; };
+		40E6619A1EFD102A00C96C36 /* ExistingChannelListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExistingChannelListCell.m; sourceTree = "<group>"; };
+		40E6619C1EFD3C2300C96C36 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
+		40E6619D1EFD3C2300C96C36 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		85C14CED3E727B7D865F9BD6 /* libPods-chatBot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-chatBot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		883E8C4127DBAC791734AAA7 /* Pods-chatBot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chatBot.release.xcconfig"; path = "Pods/Target Support Files/Pods-chatBot/Pods-chatBot.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -131,10 +131,10 @@
 			children = (
 				40E334771EFBDD8C0064EE5B /* LoginViewController.h */,
 				40E334781EFBDD8C0064EE5B /* LoginViewController.m */,
-				40E334791EFBDD8C0064EE5B /* LoginViewController.xib */,
-				40E3347C1EFBE2770064EE5B /* ChatScreenTableViewController.h */,
-				40E3347D1EFBE2770064EE5B /* ChatScreenTableViewController.m */,
-				40E3347E1EFBE2770064EE5B /* ChatScreenTableViewController.xib */,
+				40E334811EFCE9EB0064EE5B /* ChannelListViewController.h */,
+				40E334821EFCE9EB0064EE5B /* ChannelListViewController.m */,
+				40E6619C1EFD3C2300C96C36 /* ChatViewController.h */,
+				40E6619D1EFD3C2300C96C36 /* ChatViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -153,7 +153,8 @@
 			children = (
 				40E334721EFBDD430064EE5B /* ChannelCell.h */,
 				40E334731EFBDD430064EE5B /* ChannelCell.m */,
-				40E334741EFBDD430064EE5B /* ChannelCell.xib */,
+				40E661991EFD102A00C96C36 /* ExistingChannelListCell.h */,
+				40E6619A1EFD102A00C96C36 /* ExistingChannelListCell.m */,
 			);
 			name = Layout;
 			sourceTree = "<group>";
@@ -236,11 +237,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40E3347B1EFBDD8C0064EE5B /* LoginViewController.xib in Resources */,
 				40E3345D1EFBCBDB0064EE5B /* LaunchScreen.storyboard in Resources */,
-				40E334801EFBE2770064EE5B /* ChatScreenTableViewController.xib in Resources */,
 				40E334651EFBCC220064EE5B /* Images.xcassets in Resources */,
-				40E334761EFBDD430064EE5B /* ChannelCell.xib in Resources */,
 				40E3345A1EFBCBDB0064EE5B /* Assets.xcassets in Resources */,
 				40E334671EFBD1FF0064EE5B /* AppIcon.appiconset in Resources */,
 				40E334581EFBCBDB0064EE5B /* Main.storyboard in Resources */,
@@ -303,13 +301,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40E6619B1EFD102A00C96C36 /* ExistingChannelListCell.m in Sources */,
 				40E334551EFBCBDB0064EE5B /* ViewController.m in Sources */,
 				40E3346F1EFBD4CE0064EE5B /* Channel.m in Sources */,
-				40E3347F1EFBE2770064EE5B /* ChatScreenTableViewController.m in Sources */,
+				40E334831EFCE9EB0064EE5B /* ChannelListViewController.m in Sources */,
 				40E3347A1EFBDD8C0064EE5B /* LoginViewController.m in Sources */,
 				40E334521EFBCBDB0064EE5B /* AppDelegate.m in Sources */,
 				40E3344F1EFBCBDB0064EE5B /* main.m in Sources */,
 				40E334751EFBDD430064EE5B /* ChannelCell.m in Sources */,
+				40E6619E1EFD3C2300C96C36 /* ChatViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

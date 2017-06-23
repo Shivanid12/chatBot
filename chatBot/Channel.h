@@ -10,7 +10,8 @@
 
 @interface Channel : NSObject
 
-@property (nonatomic, weak) NSString *memberID ;
-@property (nonatomic , weak) NSString *name ;
+@property (nonatomic, weak) NSString* channelID ;
+@property (nonatomic , weak) NSString *channelName ;
 
++(instancetype) initWithChannelName:(NSString *)name andChannelID:(NSString * )cid ;
 @end
