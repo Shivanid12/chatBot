@@ -7,7 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <JSQMessagesViewController/JSQMessages.h>
+#import "Channel.h"
+@import Firebase ;
 
-@interface ChatViewController : UIViewController
+
+
+@interface ChatViewController : JSQMessagesViewController<JSQMessagesCollectionViewDataSource>
+
+
+@property (nonatomic , strong) FIRDatabaseReference *channelReference ;
+@property (nonatomic ,strong) Channel *chatChannel;
 
 @end

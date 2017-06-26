@@ -15,6 +15,10 @@
     Channel *channelObject = [Channel new];
     channelObject.channelName = name ;
     channelObject.channelID = cid ;
+    
     return channelObject;
+    
 }
+
+
 @end

@@ -10,6 +10,7 @@
 #import "Channel.h"
 #import "ChannelCell.h"
 #import "ExistingChannelListCell.h"
+#import "ChatViewController.h"
 @import Firebase ;
 
 NS_ENUM(int, sectionType)
@@ -20,14 +21,15 @@ NS_ENUM(int, sectionType)
 };
 
 @interface ChannelListViewController ()<UITextFieldDelegate, ChannelCellProtocol>
-@property (nonatomic , weak) NSString *SenderDisplayName ;
+
 
 @property (nonatomic, strong )NSMutableArray *channelsArray;
 
 @property (nonatomic ,weak) IBOutlet UITextField* channelTextField ;
-
+// to store a reference to the list of channels in databse
 @property (nonatomic, strong) FIRDatabaseReference *channelReference ;
 
+// to store handle to the channel reference
 @property (nonatomic, assign) FIRDatabaseHandle channelRefHandle ;
 
 
@@ -36,44 +38,43 @@ NS_ENUM(int, sectionType)
     
 @implementation ChannelListViewController
 
+#pragma mark -view lifecycle methods
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.channelReference = [FIRDatabaseReference new];
     
     self.channelReference = [[[FIRDatabase database] reference] child:@"channels"];
-    
     self.title = @"My Channels" ;
     self.channelsArray = [NSMutableArray new];
 
     [self observeChannels];
     
-  /*  [self.channelsArray addObject:[Channel initWithChannelName:@"Channel 1" andChannelID:101 ]];
-    [self.channelsArray addObject:[Channel initWithChannelName:@"Channel 2" andChannelID:102]];
-    [self.channelsArray addObject:[Channel initWithChannelName:@"Channel 3" andChannelID:103]] ;
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;*/
-}
+  }
+
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
- /*
-    [self.channelsArray addObject:[Channel initWithChannelName:@"Channel 1" andChannelID:101 ]];
-    [self.channelsArray addObject:[Channel initWithChannelName:@"Channel 2" andChannelID:102]];
-    [self.channelsArray addObject:[Channel initWithChannelName:@"Channel 3" andChannelID:103]] ;
-    [self.tableView reloadData] ;*/
-    
-     
+ 
+
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+-(void)dealloc
+{
+    if(self.channelRefHandle)
+        [self.channelReference removeObserverWithHandle:self.channelRefHandle];
+    
+}
+
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 2;
 }
 
@@ -91,27 +92,41 @@ NS_ENUM(int, sectionType)
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"----->section %ld",(long)indexPath.section);
-    
+    // section 1: containing create new channel test field + creat button
     if(indexPath.section == CreateNewChannelSection)
     {
         ChannelCell *cell = [tableView dequeueReusableCellWithIdentifier:@"NewChannelCell"];
-       // cell.CreateNewChannelTextField = self.channelTextField ;
         cell.delegate = self ;
         return cell;
         
     }
+    // section 2 : contains the channel list
     ExistingChannelListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ExistingCellID" forIndexPath:indexPath];
     
     cell.titleLabel.text = [[self.channelsArray objectAtIndex:indexPath.row] channelName];
     NSLog(@" title text --->  %@",cell.titleLabel.text);
     
-    
-        return cell ;
+    return cell ;
 }
+
+# pragma meak - table view delegate method
+-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // to show chat controller on selecting channel
+    if(indexPath.section == CurrentChannelSection)
+    {
+        Channel *tempChannel = [self.channelsArray objectAtIndex:indexPath.row] ;
+        [self performSegueWithIdentifier:@"showChannel" sender:tempChannel];
+    }
+}
+
+
 
 #pragma mark -Firebase related methods
 
+/* 
+* observe method to listen to new channels being written to the firebase DB
+*/
 -(void) observeChannels
 {
     // creating a channel model and adding to channelsArray
@@ -132,41 +147,43 @@ NS_ENUM(int, sectionType)
     }];
 }
 
+/*
+ * To create new channles and save to firebase db 
+  @param title to set the name of the channel
+ */
 -(void) createChannelDataForNewChannelWithTitle:(NSString *)title
 {
     FIRDatabaseReference *tempChannelRef = [[FIRDatabaseReference alloc] init];
+    
+    // to create a channel with a unique key
     tempChannelRef = [self.channelReference childByAutoId];
+    // to create the dictionary to hold channel data
     NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] init];
     [tempDict setObject:title forKey:@"name"];
+    // setting name to the channel (saved to firebase automatically)
     [tempChannelRef setValue:tempDict];
     
     NSLog(@"logging info ");
     
     
 }
--(void)dealloc
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if(self.channelRefHandle)
-        [self.channelReference removeObserverWithHandle:self.channelRefHandle];
+    [super prepareForSegue:segue sender:sender] ;
+    Channel *tempChannel = (Channel *)sender ;
+    if(tempChannel)
+    {
+        ChatViewController *chatVC = [segue destinationViewController];
+        chatVC.senderDisplayName = self.SenderDisplayName ;
+        chatVC.chatChannel = tempChannel ;
+        chatVC.channelReference = [self.channelReference child:tempChannel.channelID];
+        
+    }
     
 }
 
--(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if(indexPath.section == CurrentChannelSection)
-    {
-        Channel *tempChannel = [self.channelsArray objectAtIndex:indexPath.row] ;
-        [self performSegueWithIdentifier:@"showChannel" sender:tempChannel];
-    }
-}
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

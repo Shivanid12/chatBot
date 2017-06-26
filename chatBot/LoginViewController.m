@@ -7,6 +7,8 @@
 //
 
 #import "LoginViewController.h"
+#import "ChannelListViewController.h"
+
 @import Firebase;
 
 @interface LoginViewController ()<UITextFieldDelegate>
@@ -22,16 +24,18 @@
 
 @end
 
-@implementation LoginViewController 
+@implementation LoginViewController
+#pragma mark - view lifecycle methods
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 }
 
 -(void) viewWillAppear:(BOOL)animated
 {
-    // TODO add keyboard notification observer
+// keyboard notification observer
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillShowNOtification:) name:UIKeyboardWillShowNotification object:nil ];
     
@@ -41,7 +45,7 @@
 
 -(void) viewWillDisappear:(BOOL)animated
 {
-    // TODO remove observer for keyboard notification
+// to remove observer for keyboard notification
     
     [[NSNotificationCenter defaultCenter] removeObserver:UIKeyboardWillShowNotification];
     [[NSNotificationCenter defaultCenter] removeObserver:UIKeyboardWillHideNotification];
@@ -52,38 +56,52 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - text field delegate
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
     return YES ;
 }
 
+#pragma mark - Keyboard related methods
+
 -(void) keyBoardWillShowNOtification:(NSNotification *)notification
 {
-   // NSDictionary* info = [notification userInfo];
-  //  CGRect kbFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue] ;
-      self.textFieldCentreConstraint.constant = 0 ;
+    self.textFieldCentreConstraint.constant = 0 ;
 }
 
 -(void) keyBoardWillHideNotification:(NSNotification *)notification
 {
     self.textFieldCentreConstraint.constant = 50 ;
 }
-- (IBAction)AnonymousLoginButtonTapped:(id)sender {
+
+- (IBAction)AnonymousLoginButtonTapped:(id)sender
+{
     
     if( self.emailTextField.text != nil && ![self.emailTextField.text  isEqual: @""])
     {
-        // using the Firebase Auth API to sign in anonymously
-
+// using the Firebase Auth API to sign in anonymously
+        
         [[FIRAuth auth] signInAnonymouslyWithCompletion:^(FIRUser * _Nullable user, NSError * _Nullable error) {
             if(error)
             {
-            NSLog(@" Error : %@",error.localizedDescription);
-            return ;
+                NSLog(@" Error : %@",error.localizedDescription);
+                return ;
             }
             [self performSegueWithIdentifier:@"loginToChat" sender:nil];
         }];
         
     }
+}
+
+#pragma mark -Navigation
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    UINavigationController *navVC = segue.destinationViewController ;
+    ChannelListViewController *channelVC = navVC.viewControllers.firstObject ;
+    channelVC.SenderDisplayName = self.emailTextField.text ;
+    
 }
 @end

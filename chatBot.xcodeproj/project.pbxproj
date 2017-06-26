@@ -117,10 +117,10 @@
 			children = (
 				40E334511EFBCBDB0064EE5B /* AppDelegate.m */,
 				40E334531EFBCBDB0064EE5B /* ViewController.h */,
+				40E334541EFBCBDB0064EE5B /* ViewController.m */,
 				40E334501EFBCBDB0064EE5B /* AppDelegate.h */,
 				40E334561EFBCBDB0064EE5B /* Main.storyboard */,
 				40E3345B1EFBCBDB0064EE5B /* LaunchScreen.storyboard */,
-				40E334541EFBCBDB0064EE5B /* ViewController.m */,
 				40E3345E1EFBCBDB0064EE5B /* Info.plist */,
 			);
 			name = "Core files";

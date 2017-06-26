@@ -9,4 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface ChannelListViewController : UITableViewController
+
+@property (nonatomic , weak) NSString *SenderDisplayName ;
 @end

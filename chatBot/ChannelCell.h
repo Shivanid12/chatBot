@@ -14,8 +14,11 @@
 
 @interface ChannelCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet UITextField *CreateNewChannelTextField;
+
 @property (weak, nonatomic) IBOutlet UIButton *createChannelButton;
+
 @property (strong,nonatomic)id<ChannelCellProtocol> delegate;
+
 - (IBAction)createChannelButtonTapped:(id)sender;
 
 @end
