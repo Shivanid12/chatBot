@@ -38,7 +38,7 @@ NS_ENUM(int, sectionType)
     
 @implementation ChannelListViewController
 
-#pragma mark -view lifecycle methods
+#pragma mark - view lifecycle methods
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -183,6 +183,12 @@ NS_ENUM(int, sectionType)
         
     }
     
+}
+
+- (IBAction)logoutButtonTapped:(id)sender
+{
+        [[FIRAuth auth] signOut:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

@@ -22,6 +22,7 @@
 		40E334831EFCE9EB0064EE5B /* ChannelListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E334821EFCE9EB0064EE5B /* ChannelListViewController.m */; };
 		40E6619B1EFD102A00C96C36 /* ExistingChannelListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E6619A1EFD102A00C96C36 /* ExistingChannelListCell.m */; };
 		40E6619E1EFD3C2300C96C36 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E6619D1EFD3C2300C96C36 /* ChatViewController.m */; };
+		40E661A51F03941E00C96C36 /* MeasurementHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E661A41F03941E00C96C36 /* MeasurementHelper.m */; };
 		E503EC43E08D70AA8830250E /* libPods-chatBot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C14CED3E727B7D865F9BD6 /* libPods-chatBot.a */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,8 @@
 		40E6619A1EFD102A00C96C36 /* ExistingChannelListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExistingChannelListCell.m; sourceTree = "<group>"; };
 		40E6619C1EFD3C2300C96C36 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		40E6619D1EFD3C2300C96C36 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
+		40E661A31F03941E00C96C36 /* MeasurementHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeasurementHelper.h; sourceTree = "<group>"; };
+		40E661A41F03941E00C96C36 /* MeasurementHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeasurementHelper.m; sourceTree = "<group>"; };
 		85C14CED3E727B7D865F9BD6 /* libPods-chatBot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-chatBot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		883E8C4127DBAC791734AAA7 /* Pods-chatBot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chatBot.release.xcconfig"; path = "Pods/Target Support Files/Pods-chatBot/Pods-chatBot.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -115,10 +118,10 @@
 		40E334691EFBD3970064EE5B /* Core files */ = {
 			isa = PBXGroup;
 			children = (
+				40E334501EFBCBDB0064EE5B /* AppDelegate.h */,
 				40E334511EFBCBDB0064EE5B /* AppDelegate.m */,
 				40E334531EFBCBDB0064EE5B /* ViewController.h */,
 				40E334541EFBCBDB0064EE5B /* ViewController.m */,
-				40E334501EFBCBDB0064EE5B /* AppDelegate.h */,
 				40E334561EFBCBDB0064EE5B /* Main.storyboard */,
 				40E3345B1EFBCBDB0064EE5B /* LaunchScreen.storyboard */,
 				40E3345E1EFBCBDB0064EE5B /* Info.plist */,
@@ -135,6 +138,8 @@
 				40E334821EFCE9EB0064EE5B /* ChannelListViewController.m */,
 				40E6619C1EFD3C2300C96C36 /* ChatViewController.h */,
 				40E6619D1EFD3C2300C96C36 /* ChatViewController.m */,
+				40E661A31F03941E00C96C36 /* MeasurementHelper.h */,
+				40E661A41F03941E00C96C36 /* MeasurementHelper.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -301,6 +306,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40E661A51F03941E00C96C36 /* MeasurementHelper.m in Sources */,
 				40E6619B1EFD102A00C96C36 /* ExistingChannelListCell.m in Sources */,
 				40E334551EFBCBDB0064EE5B /* ViewController.m in Sources */,
 				40E3346F1EFBD4CE0064EE5B /* Channel.m in Sources */,

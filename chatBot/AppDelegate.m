@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 @import UIKit;
-@import Firebase;
 @interface AppDelegate ()
 
 @end
@@ -19,9 +18,43 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [FIRApp configure];
+    [GIDSignIn sharedInstance].clientID = [[[FIRApp defaultApp] options] clientID];
+    [GIDSignIn sharedInstance].delegate =self ;
+    
     return YES;
 }
 
+- (void)signIn:(GIDSignIn *)signIn
+didSignInForUser:(GIDGoogleUser *)user
+     withError:(NSError *)error
+{
+    if(error == nil)
+    {
+// Obtain User authentication
+        GIDAuthentication *authentication = user.authentication ;
+// using user account to authenticate with firebase
+        FIRAuthCredential *credential = [FIRGoogleAuthProvider credentialWithIDToken:authentication.idToken accessToken:authentication.accessToken];
+        [[FIRAuth auth] signInWithCredential:credential completion:^(FIRUser * _Nullable user, NSError * _Nullable error) {
+            if(error)
+            {
+                NSLog(@" Authentication error : %@",error.localizedDescription);
+                return ;
+            }
+        }];
+        
+    }
+    
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    // to check if GIDSIgnIn handled the url
+    return [[GIDSignIn sharedInstance] handleURL:url
+                               sourceApplication:sourceApplication
+                                      annotation:annotation];
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

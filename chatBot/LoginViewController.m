@@ -8,6 +8,8 @@
 
 #import "LoginViewController.h"
 #import "ChannelListViewController.h"
+#import "MeasurementHelper.h"
+
 
 @import Firebase;
 
@@ -18,9 +20,14 @@
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 
 @property (weak, nonatomic) IBOutlet UIButton *AnonymousLoginButton;
+@property (weak, nonatomic) IBOutlet GIDSignInButton *signInButton;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textFieldCentreConstraint;
+
+@property(strong, nonatomic) FIRAuthStateDidChangeListenerHandle authenticationHandle;
+
 - (IBAction)AnonymousLoginButtonTapped:(id)sender;
+
 
 @end
 
@@ -30,7 +37,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    [GIDSignIn sharedInstance].uiDelegate = self ;
+    [[GIDSignIn sharedInstance] signInSilently];
+    
+// Adding a listener to Firebase Auth, to let the user into the app, after successful sign in
+    self.authenticationHandle = [[FIRAuth auth] addAuthStateDidChangeListener:^(FIRAuth * _Nonnull auth, FIRUser * _Nullable user) {
+        if(user)
+        {
+            [MeasurementHelper sendLoginEvent];
+            [self performSegueWithIdentifier:@"loginToChat" sender:nil];
+        }
+        
+    }];
+
+    
+    
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -56,6 +77,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void) dealloc
+{
+    if(self.authenticationHandle)
+        [[FIRAuth auth] removeAuthStateDidChangeListener:self.authenticationHandle];
+}
+
 #pragma mark - text field delegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -68,7 +95,7 @@
 
 -(void) keyBoardWillShowNOtification:(NSNotification *)notification
 {
-    self.textFieldCentreConstraint.constant = 0 ;
+    self.textFieldCentreConstraint.constant = -10 ;
 }
 
 -(void) keyBoardWillHideNotification:(NSNotification *)notification

@@ -10,5 +10,6 @@ target 'chatBot' do
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
   pod 'JSQMessagesViewController'
-
+  pod 'Firebase/Invites'
+  pod 'Firebase/Messaging'
 end
