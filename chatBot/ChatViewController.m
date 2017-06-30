@@ -9,12 +9,14 @@
 #import "ChatViewController.h"
 @import Photos ;
 
-@interface ChatViewController () <UIImagePickerControllerDelegate>
+@interface ChatViewController () 
 @property (nonatomic, strong) NSMutableArray *messagesArray ;
+@property (nonatomic, strong)NSMutableDictionary *photoMessageMap ;
 
  //To hold the message references to the database
 @property (nonatomic, strong) FIRDatabaseReference *messageReference ;
 @property (nonatomic ,assign) FIRDatabaseHandle newMessageHandle ;
+@property (nonatomic ,assign) FIRDatabaseHandle updatedMessageHandle ;
 
 // properties for showing whether the other user is typing or not.
 @property (nonatomic ,assign) BOOL isTyping ;
@@ -22,6 +24,9 @@
 
 // Adding image attachment option
 @property (nonatomic ,weak) NSString *imageUrlNotSetKey ;
+
+@property (strong, nonatomic) FIRStorageReference *storageRef;
+
 
 @end
 
@@ -34,6 +39,7 @@
 // sets the sender ID based on logged in firebase user
     self.senderId = [[[FIRAuth auth] currentUser] uid];
     self.messagesArray = [NSMutableArray new];
+    self.photoMessageMap = [NSMutableDictionary new];
     
 // setting avatar images to nil
     
@@ -41,8 +47,12 @@
     [self.collectionView collectionViewLayout ].outgoingAvatarViewSize = CGSizeZero ;
     
     [self observeMessages];
+    self.navigationController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"more-icon"] style:UIBarButtonItemStylePlain target:nil action:nil];
     
     self.imageUrlNotSetKey = @"NOTSET";
+    if((self.senderDisplayName == nil) || [self.senderDisplayName  isEqual: @""])
+        self.senderDisplayName = [[[FIRAuth auth] currentUser] displayName];
+    
     
 }
 
@@ -60,7 +70,9 @@
 -(void) dealloc
 {
     if(self.newMessageHandle)
-        [[self.messageReference child:@"messages"] removeObserverWithHandle:self.newMessageHandle];
+        [self.messageReference removeObserverWithHandle:self.newMessageHandle];
+    if(self.updatedMessageHandle)
+        [self.messageReference removeObserverWithHandle:self.updatedMessageHandle];
 }
 
 #pragma mark - CollectionView Datasource
@@ -108,7 +120,7 @@
 }
 
 /*
-* to set color for outgoing message bubble
+ * to set color for outgoing message bubble
  */
 
 -(JSQMessagesBubbleImage *) setupOutgoingMessages
@@ -127,8 +139,57 @@
 
 -(void) addMessageWithID:(NSString *)idString name:(NSString *)nameString andText:(NSString *)textString
 {
+    if(textString == nil)
+        return ;
     JSQMessage *messageObject = [JSQMessage messageWithSenderId:idString displayName:nameString text:textString];
+
     [self.messagesArray addObject:messageObject];
+    
+}
+
+-(void) addPhotoMessageWithID:(NSString *)idString name:(NSString *)displayName key:(NSString *)key andMediaItem:(JSQPhotoMediaItem *)mediaItem
+{
+    JSQMessage *messageObject = [JSQMessage messageWithSenderId:idString displayName:displayName media:mediaItem];
+    
+    [self.messagesArray addObject:messageObject];
+    
+    if(mediaItem.image == nil)
+    {
+        // initialising image media in dictionary
+        [self.photoMessageMap setObject:mediaItem forKey:key];
+    }
+    [self.collectionView reloadData];
+    
+}
+
+-(JSQPhotoMediaItem *) fetchImageDataAtURL:(NSString *)urlString forMediaItem:(JSQPhotoMediaItem *)mediaItem andKey:(NSString *)key
+{
+    if(urlString == nil)
+        return mediaItem;
+    
+    if([urlString hasPrefix:@"gs://"])
+    {
+        [[[FIRStorage storage] referenceForURL:urlString] dataWithMaxSize:INT64_MAX completion:^(NSData * _Nullable data, NSError * _Nullable error) {
+            if(error)
+            {
+                NSLog(@"downloading error : %@",error.description);
+                return ;
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if(data)
+                    mediaItem.image = [UIImage imageWithData:data];
+                
+                                                       });
+        }];
+    }
+    else
+    {
+        NSURL *url = [NSURL URLWithString:urlString];
+        NSData *data = [NSData dataWithContentsOfURL:url];
+        if(data)
+            mediaItem.image = [UIImage imageWithData:data];
+    }
+    return mediaItem ;
     
 }
 
@@ -179,13 +240,33 @@
         NSDictionary *msgData = [[NSDictionary alloc] initWithDictionary:snapshot.value] ;
         if(msgData)
         {
-            [self addMessageWithID:[msgData valueForKey:@"senderId"] name:[msgData valueForKey:@"senderDisplayName"] andText:[msgData valueForKey:@"text"]];
+            if([msgData valueForKey:@"text"])
+                [self addMessageWithID:[msgData valueForKey:@"senderId"] name:[msgData valueForKey:@"senderDisplayName"] andText:[msgData valueForKey:@"text"]];
+            if([msgData valueForKey:@"photoUrl"])
+            {
+                JSQPhotoMediaItem *mediaItem = [[JSQPhotoMediaItem alloc] initWithMaskAsOutgoing:[[msgData valueForKey:@"senderId"] isEqual:self.senderId]];
+                mediaItem = [self fetchImageDataAtURL:[msgData valueForKey:@"photoUrl"] forMediaItem:mediaItem andKey:nil];
+                [self addPhotoMessageWithID:[msgData valueForKey:@"senderId"] name:[msgData valueForKey:@"senderDisplayName"] key:[snapshot key] andMediaItem:mediaItem];
+
+            }
             [self finishReceivingMessage];
         }
         else
             NSLog(@" Error loading message");
         
          
+    }];
+    
+    self.updatedMessageHandle = [messageQuery observeEventType:FIRDataEventTypeChildChanged withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
+    {
+        NSDictionary *msgData = [[NSDictionary alloc] initWithDictionary:snapshot.value] ;
+        if([msgData valueForKey:@"photoUrl"])
+        {
+            JSQPhotoMediaItem *mediaItem = [self.photoMessageMap valueForKey:snapshot.key];
+            if(mediaItem)
+                [self fetchImageDataAtURL:[msgData valueForKey:@"photoUrl"] forMediaItem:mediaItem andKey:snapshot.key];
+        }
+            
     }];
 }
 
@@ -251,7 +332,8 @@
     NSMutableDictionary *msgItem = [NSMutableDictionary new];
     [msgItem setObject:self.imageUrlNotSetKey forKey:@"photoUrl"];
     [msgItem setObject:self.senderId forKey:@"senderId"];
-    
+
+    [msgItem setObject:self.senderDisplayName forKey:@"senderDisplayName"];
     [itemRef setValue:msgItem];
     
     [JSQSystemSoundPlayer jsq_playMessageSentSound];
@@ -274,43 +356,83 @@
 /*
  * overriding method to set the image source type.
  */
-- (void) didPressAccessoryButton:(UIButton *)sender
+- (void)didPressAccessoryButton:(UIButton *)sender
 {
-    UIImagePickerController *imagePicker = [UIImagePickerController new];
-    imagePicker.delegate = self ;
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera ;
-    else
-        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary ;
-    
+    UIImagePickerController * picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    } else {
+        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    [self presentViewController:picker animated:YES completion:nil];
 }
 
 -(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
-    [picker dismissViewControllerAnimated:YES completion:nil];
-    NSArray *photoReferenceUrl = info[UIImagePickerControllerReferenceURL];
-// pulling PHAsset from the photo url
-    PHFetchResult *assetArray = [PHAsset fetchAssetsWithALAssetURLs:photoReferenceUrl options:nil];
-    PHAsset *asset = [assetArray firstObject];
     
-// retrieving the photo's firebase key
-    NSString *photoKey = [self sendPhotoMessage];
-        if(photoKey)
+    NSString *userID =[[[FIRAuth auth] currentUser] uid];
+    if(userID == nil || [userID  isEqual: @""])
+        return ;
+    NSURL *referenceURL = info[UIImagePickerControllerReferenceURL];
+    if(referenceURL)
     {
-        
-
-        [asset requestContentEditingInputWithOptions:nil completionHandler:^(PHContentEditingInput * _Nullable contentEditingInput, NSDictionary * _Nonnull info) {
+// pulling PHAsset from the photo url
+        PHFetchResult *assetArray = [PHAsset fetchAssetsWithALAssetURLs:@[referenceURL] options:nil];
+        PHAsset *asset = [assetArray firstObject];
+// retrieving the photo's firebase key
+        NSString *photoKey = [self sendPhotoMessage];
+        if(photoKey)
+        {
+            
+            
+            [asset requestContentEditingInputWithOptions:nil completionHandler:^(PHContentEditingInput * _Nullable contentEditingInput, NSDictionary * _Nonnull info)
+            {
 // getting url for the image
             NSURL *imageFileURL = [contentEditingInput fullSizeImageURL];
-            
+                
 // creating path based on unique ID and current time
-            NSString *path = @"\(FIRAuth.auth()?.currentUser?.uid)/\(Int(Date.timeIntervalSinceReferenceDate * 1000))/\(photoReferenceUrl.lastPathComponent)";
-        //    [[[[FIRAuth auth] currentUser] uid]
-            
-        }] ;
-    }
-        
-    
-}
+            NSString *filePath = [NSString stringWithFormat:@"%@/%lld/%@", [FIRAuth auth].currentUser.uid, (long long)([NSDate date].timeIntervalSince1970 * 1000.0), referenceURL.lastPathComponent];
+            __strong ChatViewController *strongSelf = self ;
+            if(!strongSelf)
+                return ;
+            [[strongSelf.storageRef child:filePath] putFile:imageFileURL metadata:nil completion:^(FIRStorageMetadata * _Nullable metadata, NSError * _Nullable error)
+                 {
+                     if(error)
+                     {
+                         NSLog(@" ---> Error : %@",error.localizedDescription);
+                         return ;
+                     }
+                     [strongSelf setImageUrl:[[[self storageRef] child:metadata.path] description] forPhotoMessageWithKey:photoKey];
+                     
+                 }];
 
+            }] ;
+        }
+        else
+        {
+            UIImage *image = info[UIImagePickerControllerOriginalImage];
+            NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
+            NSString *imagePath =
+            [NSString stringWithFormat:@"%@/%lld.jpg",
+             [FIRAuth auth].currentUser.uid,
+             (long long)([NSDate date].timeIntervalSince1970 * 1000.0)];
+            FIRStorageMetadata *storageMetadata = [FIRStorageMetadata new];
+            storageMetadata.contentType = @"image/jpeg";
+            [[self.storageRef child: imagePath] putData:imageData metadata:storageMetadata completion:^(FIRStorageMetadata * _Nullable metadata, NSError * _Nullable error) {
+                if(error)
+                {
+                    NSLog(@"---> Error uploading : %@",error.localizedDescription) ;
+                    return ;
+                    
+                }
+                [self setImageUrl:[[[self storageRef] child:metadata.path] description] forPhotoMessageWithKey:photoKey];
+                
+            }];
+        }
+        
+    [picker dismissViewControllerAnimated:YES completion:nil];
+
+}
+}
 @end

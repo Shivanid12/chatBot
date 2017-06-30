@@ -13,8 +13,7 @@
 
 
 
-@interface ChatViewController : JSQMessagesViewController<JSQMessagesCollectionViewDataSource>
-
+@interface ChatViewController : JSQMessagesViewController<JSQMessagesCollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic , strong) FIRDatabaseReference *channelReference ;
 @property (nonatomic ,strong) Channel *chatChannel;

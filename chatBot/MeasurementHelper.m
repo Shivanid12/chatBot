@@ -14,15 +14,20 @@
 
 + (void)sendLoginEvent
 {
+    [FIRAnalytics logEventWithName:@"login" parameters:nil];
+
 }
 
 + (void)sendLogoutEvent
 {
-    
+    [FIRAnalytics logEventWithName:@"logout" parameters:nil];
+
 }
 
 + (void)sendMessageEvent
 {
+    [FIRAnalytics logEventWithName:@"messages" parameters:nil];
+
     
 }
 
